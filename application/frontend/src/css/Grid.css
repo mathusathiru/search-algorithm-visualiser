@@ -1,0 +1,313 @@
+:root {
+  --grid-border-color: black;
+  --grid-cell-bg: white;
+  --grid-hover-bg: rgb(243 244 246);
+  --current-cell-bg: rgb(252 165 165);
+  --node-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --node-size: 1rem;
+  --node-start-color: red;
+  --node-end-color: green;
+  --path-color: #85e3ff;
+  --outline-color: #4f46e5;
+  --altitude-bg: rgba(255, 255, 255, 0.8);
+}
+
+.grid-container {
+  width: 100%;
+}
+
+.grid-wrapper {
+  display: grid;
+  width: 100%;
+  gap: 0;
+  position: relative;
+  border: 1px solid var(--grid-border-color);
+  background-image: linear-gradient(
+      var(--grid-border-color) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, var(--grid-border-color) 1px, transparent 1px);
+}
+
+.grid-cell {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: 1px solid var(--grid-border-color);
+  transition: all 0.2s ease;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  perspective: 1000px;
+}
+
+.grid-cell.interactive {
+  cursor: pointer;
+}
+
+.grid-cell.interactive:hover {
+  background-color: var(--grid-hover-bg);
+  transform: scale(1.05);
+  z-index: 1;
+}
+
+.grid-cell.disabled {
+  cursor: not-allowed;
+}
+
+.grid-cell:focus {
+  outline: 2px solid var(--outline-color);
+  outline-offset: -2px;
+}
+
+.current-cell {
+  position: absolute;
+  inset: 0;
+  background-color: var(--current-cell-bg);
+  z-index: 5;
+  border: 1px solid var(--grid-border-color);
+  animation: currentCellPulse 1s ease-in-out infinite;
+}
+
+.grid-node {
+  position: absolute;
+  width: var(--node-size);
+  height: var(--node-size);
+  border-radius: 9999px;
+  transform: translate(-50%, -50%);
+  box-shadow: var(--node-shadow);
+  z-index: 10;
+  transition: transform 0.1s ease-out;
+}
+
+.grid-node:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.grid-node.draggable {
+  cursor: move;
+}
+
+.grid-node.disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.grid-node:focus {
+  outline: 2px solid var(--outline-color);
+  outline-offset: -2px;
+}
+
+.grid-node.start {
+  background-color: var(--node-start-color);
+  animation: pulse1 2s ease-in-out infinite;
+}
+
+.grid-node.end {
+  background-color: var(--node-end-color);
+  animation: pulse2 2s ease-in-out infinite;
+}
+
+.grid-cell.wall {
+  background-color: var(--grid-border-color);
+  transform-origin: center;
+  transition: all 0.2s ease-out;
+}
+
+.grid-cell.wall:not(.disabled):hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.path-cell {
+  position: relative;
+  overflow: hidden;
+  transition: background-color 0.2s ease-out;
+  will-change: transform, opacity;
+  animation: pathPulse 3s ease-in-out infinite;
+}
+
+.path-cell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    45deg,
+    rgba(133, 227, 255, 0.5) 25%,
+    rgba(133, 227, 255, 0.7) 50%,
+    rgba(133, 227, 255, 0.5) 75%
+  );
+  animation: pathGlow 3s linear infinite;
+}
+
+.altitude-label {
+  position: absolute;
+  font-size: 0.6rem;
+  top: 2px;
+  left: 2px;
+  opacity: 0.7;
+  color: var(--grid-border-color);
+  pointer-events: none;
+}
+
+.altitude-color-scheme {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background-color: var(--altitude-bg);
+  padding: 10px;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.altitude-color-legend {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 5px;
+}
+
+.altitude-color-cell {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+}
+
+.grid-wrapper.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.grid-wrapper.loading::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(2px);
+}
+
+@keyframes currentCellPulse {
+  0%,
+  100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes pathGlow {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 200% 0%;
+  }
+}
+
+@keyframes pulse1 {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}
+
+@keyframes pulse2 {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}
+
+@keyframes ping1 {
+  75%,
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+@keyframes ping2 {
+  75%,
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+@keyframes pathPulse {
+  0% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.2);
+  }
+  100% {
+    filter: brightness(1);
+  }
+}
+
+@media (max-width: 640px) {
+  .grid-wrapper {
+    background-size: 20px 20px;
+  }
+
+  .grid-node {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid-wrapper {
+    background-size: 16px 16px;
+  }
+
+  .grid-node {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .grid-cell {
+    border-width: 2px;
+  }
+
+  .current-cell {
+    background-color: var(--node-start-color);
+  }
+
+  .path-cell {
+    background-color: var(--path-color) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grid-node,
+  .path-cell,
+  .current-cell {
+    animation: none;
+    transition: none;
+  }
+
+  .path-cell::after {
+    animation: none;
+  }
+}
+
+@media print {
+  .grid-wrapper {
+    border: 2px solid var(--grid-border-color);
+  }
+
+  .grid-cell {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+}
