@@ -11,9 +11,10 @@ from scipy import stats
 import statsmodels.api as sm
 from statsmodels.formula.api import ols
 
+
 class ResultAnalyzer:
     """Analyze and visualize pathfinding algorithm test results."""
-    
+
     def __init__(self, single_agent_file=None, multi_agent_file=None):
         """Initialize the analyzer with results files."""
         self.single_agent_data = None
@@ -110,7 +111,7 @@ class ResultAnalyzer:
             'execution_time': 'mean',
             'is_goal_reached': 'mean'
         }).reset_index()
-        
+
         # Plot execution time by scenario
         plt.figure(figsize=(14, 10))
         g = sns.catplot(
@@ -122,7 +123,7 @@ class ResultAnalyzer:
         plt.tight_layout()
         plt.savefig("analysis_results/single_agent_scenario_performance.png")
         plt.close()
-        
+
         # 6. Statistical significance testing
         # Perform ANOVA to see if algorithm choice significantly affects execution time
         model = ols('execution_time ~ algorithm', data=df).fit()
@@ -138,7 +139,7 @@ class ResultAnalyzer:
                 algorithms = df['algorithm'].unique()
                 
                 for i, algo1 in enumerate(algorithms):
-                    for algo2 in algorithms[i+1:]:
+                    for algo2 in algorithms[i + 1:]:
                         group1 = df[df['algorithm'] == algo1]['execution_time']
                         group2 = df[df['algorithm'] == algo2]['execution_time']
                         
@@ -150,10 +151,10 @@ class ResultAnalyzer:
             grid_perf = df.groupby(['algorithm', 'grid_size']).agg({
                 'execution_time': 'mean'
             }).reset_index()
-            
+
             # Convert grid_size to categorical with proper order
             grid_perf['grid_size'] = pd.Categorical(
-                grid_perf['grid_size'], 
+                grid_perf['grid_size'],
                 categories=['small', 'medium', 'large'], 
                 ordered=True
             )
@@ -391,8 +392,9 @@ def main():
     # Create analyzer and run analysis
     analyzer = ResultAnalyzer(args.single, args.multi)
     analyzer.run_full_analysis()
-    
+
     print("Analysis complete. Results saved to the 'analysis_results' directory.")
+
 
 if __name__ == "__main__":
     main()

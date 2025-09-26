@@ -69,7 +69,7 @@ def random_walk():
 
     if walls is None:
         walls = [[False for _ in range(grid_size["cols"])]
-                for _ in range(grid_size["rows"])]
+                    for _ in range(grid_size["rows"])]
     else:
         walls = [[bool(cell) for cell in row] for row in walls]
 

@@ -613,11 +613,10 @@ class PathfindingTester:
                 print(f"Error setting up trial {trial} for {scenario_type}: {e}")
         
         return results
-    
 
     def run_comprehensive_tests(self, single_agent_only=False, multi_agent_only=False, random_walk_only=False):
         """Run a comprehensive test suite for both single and multi-agent algorithms."""
-        # Initialize with existing results to preserve previous test data
+        # Initialise with existing results to preserve previous test data
         if not hasattr(self, 'results') or self.results is None:
             self.results = {}
         
@@ -959,7 +958,6 @@ class PathfindingTester:
             valid_results = [r for r in algorithm_results 
                              if not np.isinf(r.get(path_key, 0)) and not np.isnan(r.get(path_key, 0))
                              and not np.isinf(r.get("nodes_visited", 0)) and not np.isnan(r.get("nodes_visited", 0))]
-            
             if not valid_results:
                 continue
                 
