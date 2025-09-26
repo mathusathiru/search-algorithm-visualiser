@@ -60,8 +60,3 @@ Note: The frontend and backend folders are inside the application folder.
 ## 🖥️ How to Use
 - The application should open at `http://localhost:3000`
 - If this does not open automatically, type the address into your browser
-
-## 📞 Contact
-
-Mathusa Thiruchenthoor
-mt21942@essex.ac.uk
