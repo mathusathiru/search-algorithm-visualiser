@@ -5,11 +5,11 @@ This Search Algorithm Visualiser is an interactive web application to understand
 This guide shows how to run the deployed application, or to install the application to access it locally. 
 
 
-## 🌐 Application Access
+## Application Access
 Access the application at: [https://mt21942.pythonanywhere.com/](https://mt21942.pythonanywhere.com/)
 
 
-## 💻 Local Installation Steps
+## Local Installation Steps
 
 ### Prerequisites
 - Python 3.9+
@@ -57,6 +57,6 @@ Access the application at: [https://mt21942.pythonanywhere.com/](https://mt21942
 Note: The frontend and backend folders are inside the application folder.
 
 
-## 🖥️ How to Use
+## How to Use
 - The application should open at `http://localhost:3000`
 - If this does not open automatically, type the address into your browser
